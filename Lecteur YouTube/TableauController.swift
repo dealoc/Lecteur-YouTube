@@ -14,7 +14,8 @@ class TableauController: UIViewController, UITableViewDelegate, UITableViewDataS
     
     var chansons = [Chanson]()
     
-    let idenifiantCell = "ChansonCell"
+    let identifiantCell = "ChansonCell"
+    let identifiantSegue = "VersVideo"
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,16 +31,28 @@ class TableauController: UIViewController, UITableViewDelegate, UITableViewDataS
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let chanson = chansons[indexPath.row]
-        if let cell = tableView.dequeueReusableCell(withIdentifier: idenifiantCell) as? ChansonCell {
+        if let cell = tableView.dequeueReusableCell(withIdentifier: identifiantCell) as? ChansonCell {
             cell.creerCell(chanson)
             return cell
         }
-        
         return UITableViewCell()
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 130
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let chanson = chansons[indexPath.row]
+        performSegue(withIdentifier: identifiantSegue, sender: chanson)
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == identifiantSegue {
+            if let nouveauController = segue.destination as? VideoController {
+                nouveauController.chanson = sender as? Chanson
+            }
+        }
     }
     
     func ajouterChanson() {
