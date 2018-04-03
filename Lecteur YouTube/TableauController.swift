@@ -13,11 +13,14 @@ class TableauController: UIViewController, UITableViewDelegate, UITableViewDataS
     @IBOutlet weak var tableView: UITableView!
     
     var chansons = [Chanson]()
+    
+    let idenifiantCell = "ChansonCell"
 
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.delegate = self
         tableView.dataSource = self
+        ajouterChanson()
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -25,7 +28,17 @@ class TableauController: UIViewController, UITableViewDelegate, UITableViewDataS
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let chanson = chansons[indexPath.row]
+        if let cell = tableView.dequeueReusableCell(withIdentifier: idenifiantCell) as? ChansonCell {
+            cell.creerCell(chanson)
+            return cell
+        }
+        
         return UITableViewCell()
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 170
     }
     
     func ajouterChanson() {
